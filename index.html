@@ -144,6 +144,24 @@
         .hidden {
             display: none;
         }
+        .admin-badge {
+            background-color: #27ae60;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+        .make-admin-btn {
+            background-color: #27ae60;
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        .remove-admin-btn {
+            background-color: #e74c3c;
+            padding: 5px 10px;
+            font-size: 12px;
+        }
     </style>
 </head>
 <body>
@@ -184,59 +202,13 @@
                     <tr>
                         <th>Name</th>
                         <th>Email</th>
+                        <th>Role</th>
                         <th>Responsibilities</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Sir Hamza Abrar</td>
-                        <td>ivscoordinatorsheryar@gmail.com</td>
-                        <td>Fee Verification</td>
-                        <td><button onclick="assignTaskToEmployee('Sir Hamza Abrar', 'ivscoordinatorsheryar@gmail.com')">Assign Task</button></td>
-                    </tr>
-                    <tr>
-                        <td>Sir Qasim</td>
-                        <td>ivswaleed132@gmail.com</td>
-                        <td>Myskool Incharge</td>
-                        <td><button onclick="assignTaskToEmployee('Sir Qasim', 'ivswaleed132@gmail.com')">Assign Task</button></td>
-                    </tr>
-                    <tr>
-                        <td>Sir Abdur Rehman</td>
-                        <td>ivsabdurrehman@gmail.com</td>
-                        <td>Accounts & WhatsApp Representative</td>
-                        <td><button onclick="assignTaskToEmployee('Sir Abdur Rehman', 'ivsabdurrehman@gmail.com')">Assign Task</button></td>
-                    </tr>
-                    <tr>
-                        <td>Sir Nouman</td>
-                        <td>ivsacnouman@gmail.com</td>
-                        <td>Folders and Myskool Checking Incharge</td>
-                        <td><button onclick="assignTaskToEmployee('Sir Nouman', 'ivsacnouman@gmail.com')">Assign Task</button></td>
-                    </tr>
-                    <tr>
-                        <td>Ms Sidra</td>
-                        <td>ivscoordinatorfemale1@gmail.com</td>
-                        <td>Master Sheet Incharge</td>
-                        <td><button onclick="assignTaskToEmployee('Ms Sidra', 'ivscoordinatorfemale1@gmail.com')">Assign Task</button></td>
-                    </tr>
-                    <tr>
-                        <td>Ms Najma</td>
-                        <td>ivscoordinatorfemale2@gmail.com</td>
-                        <td>Master Sheet Incharge</td>
-                        <td><button onclick="assignTaskToEmployee('Ms Najma', 'ivscoordinatorfemale2@gmail.com')">Assign Task</button></td>
-                    </tr>
-                    <tr>
-                        <td>Sir Junaid</td>
-                        <td>ivscoordinator2@gmail.com</td>
-                        <td>Admission Department Incharge</td>
-                        <td><button onclick="assignTaskToEmployee('Sir Junaid', 'ivscoordinator2@gmail.com')">Assign Task</button></td>
-                    </tr>
-                    <tr>
-                        <td>Sir Tayyab</td>
-                        <td>acivs2021@gmail.com</td>
-                        <td>Accounts Department Manager</td>
-                        <td><button onclick="assignTaskToEmployee('Sir Tayyab', 'acivs2021@gmail.com')">Assign Task</button></td>
-                    </tr>
+                    <!-- Employees will be populated here -->
                 </tbody>
             </table>
         </div>
@@ -248,14 +220,7 @@
                     <label for="employee">Employee:</label>
                     <select id="employee" required>
                         <option value="">Select Employee</option>
-                        <option value="Sir Hamza Abrar|ivscoordinatorsheryar@gmail.com">Sir Hamza Abrar</option>
-                        <option value="Sir Qasim|ivswaleed132@gmail.com">Sir Qasim</option>
-                        <option value="Sir Abdur Rehman|ivsabdurrehman@gmail.com">Sir Abdur Rehman</option>
-                        <option value="Sir Nouman|ivsacnouman@gmail.com">Sir Nouman</option>
-                        <option value="Ms Sidra|ivscoordinatorfemale1@gmail.com">Ms Sidra</option>
-                        <option value="Ms Najma|ivscoordinatorfemale2@gmail.com">Ms Najma</option>
-                        <option value="Sir Junaid|ivscoordinator2@gmail.com">Sir Junaid</option>
-                        <option value="Sir Tayyab|acivs2021@gmail.com">Sir Tayyab</option>
+                        <!-- Employees will be populated here -->
                     </select>
                 </div>
                 <div class="form-group">
@@ -308,14 +273,7 @@
             <div class="report-filters">
                 <select id="reportEmployeeFilter">
                     <option value="">All Employees</option>
-                    <option value="Sir Hamza Abrar">Sir Hamza Abrar</option>
-                    <option value="Sir Qasim">Sir Qasim</option>
-                    <option value="Sir Abdur Rehman">Sir Abdur Rehman</option>
-                    <option value="Sir Nouman">Sir Nouman</option>
-                    <option value="Ms Sidra">Ms Sidra</option>
-                    <option value="Ms Najma">Ms Najma</option>
-                    <option value="Sir Junaid">Sir Junaid</option>
-                    <option value="Sir Tayyab">Sir Tayyab</option>
+                    <!-- Employees will be populated here -->
                 </select>
                 
                 <select id="reportStatusFilter">
@@ -420,15 +378,16 @@
         ];
 
         // Employee credentials (in a real app, this would be hashed and stored securely)
-        const employees = [
-            { name: "Sir Hamza Abrar", email: "ivscoordinatorsheryar@gmail.com", password: "hamza123", isAdmin: true },
-            { name: "Sir Qasim", email: "ivswaleed132@gmail.com", password: "qasim123", isAdmin: false },
-            { name: "Sir Abdur Rehman", email: "ivsabdurrehman@gmail.com", password: "rehman123", isAdmin: false },
-            { name: "Sir Nouman", email: "ivsacnouman@gmail.com", password: "nouman123", isAdmin: false },
-            { name: "Ms Sidra", email: "ivscoordinatorfemale1@gmail.com", password: "sidra123", isAdmin: false },
-            { name: "Ms Najma", email: "ivscoordinatorfemale2@gmail.com", password: "najma123", isAdmin: false },
-            { name: "Sir Junaid", email: "ivscoordinator2@gmail.com", password: "junaid123", isAdmin: true },
-            { name: "Sir Tayyab", email: "acivs2021@gmail.com", password: "tayyab123", isAdmin: true }
+        let employees = [
+            { name: "Dr. Hamza", email: "ivsdrhamza@gmail.com", password: "admin123", isAdmin: true, responsibilities: "System Administrator" },
+            { name: "Sir Hamza Abrar", email: "ivscoordinatorsheryar@gmail.com", password: "hamza123", isAdmin: false, responsibilities: "Fee Verification" },
+            { name: "Sir Qasim", email: "ivswaleed132@gmail.com", password: "qasim123", isAdmin: false, responsibilities: "Myskool Incharge" },
+            { name: "Sir Abdur Rehman", email: "ivsabdurrehman@gmail.com", password: "rehman123", isAdmin: false, responsibilities: "Accounts & WhatsApp Representative" },
+            { name: "Sir Nouman", email: "ivsacnouman@gmail.com", password: "nouman123", isAdmin: false, responsibilities: "Folders and Myskool Checking Incharge" },
+            { name: "Ms Sidra", email: "ivscoordinatorfemale1@gmail.com", password: "sidra123", isAdmin: false, responsibilities: "Master Sheet Incharge" },
+            { name: "Ms Najma", email: "ivscoordinatorfemale2@gmail.com", password: "najma123", isAdmin: false, responsibilities: "Master Sheet Incharge" },
+            { name: "Sir Junaid", email: "ivscoordinator2@gmail.com", password: "junaid123", isAdmin: false, responsibilities: "Admission Department Incharge" },
+            { name: "Sir Tayyab", email: "acivs2021@gmail.com", password: "tayyab123", isAdmin: false, responsibilities: "Accounts Department Manager" }
         ];
 
         let currentUser = null;
@@ -486,8 +445,90 @@
                 openTab('my-tasks');
             }
             
+            updateEmployeeTable();
             updateTaskTable();
             updateMyTasksTable();
+            populateEmployeeDropdowns();
+        }
+
+        // Update the employee table
+        function updateEmployeeTable() {
+            if (!currentUser || !currentUser.isAdmin) return;
+            
+            const tableBody = document.querySelector('#employeeTable tbody');
+            tableBody.innerHTML = '';
+            
+            employees.forEach(employee => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${employee.name}</td>
+                    <td>${employee.email}</td>
+                    <td>${employee.isAdmin ? '<span class="admin-badge">Admin</span>' : 'Employee'}</td>
+                    <td>${employee.responsibilities}</td>
+                    <td>
+                        ${!employee.isAdmin ? 
+                            `<button class="make-admin-btn" onclick="toggleAdminStatus('${employee.email}', true)">Make Admin</button>` : 
+                            employee.email !== 'ivsdrhamza@gmail.com' ? 
+                                `<button class="remove-admin-btn" onclick="toggleAdminStatus('${employee.email}', false)">Remove Admin</button>` : 
+                                '<em>Default Admin</em>'
+                        }
+                        <button onclick="assignTaskToEmployee('${employee.name}', '${employee.email}')">Assign Task</button>
+                    </td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Toggle admin status
+        function toggleAdminStatus(email, makeAdmin) {
+            if (!currentUser || !currentUser.isAdmin) return;
+            
+            if (email === 'ivsdrhamza@gmail.com') {
+                alert('Cannot change the default admin status');
+                return;
+            }
+            
+            const employee = employees.find(emp => emp.email === email);
+            if (employee) {
+                employee.isAdmin = makeAdmin;
+                updateEmployeeTable();
+                
+                // If the current user changed their own status, update the UI
+                if (currentUser.email === email) {
+                    showApp();
+                }
+                
+                alert(`${employee.name} is now ${makeAdmin ? 'an Admin' : 'a regular Employee'}`);
+            }
+        }
+
+        // Populate employee dropdowns
+        function populateEmployeeDropdowns() {
+            const employeeDropdown = document.getElementById('employee');
+            const reportEmployeeFilter = document.getElementById('reportEmployeeFilter');
+            
+            // Clear existing options (except the first one)
+            while (employeeDropdown.options.length > 1) {
+                employeeDropdown.remove(1);
+            }
+            while (reportEmployeeFilter.options.length > 1) {
+                reportEmployeeFilter.remove(1);
+            }
+            
+            // Add employees to dropdowns
+            employees.forEach(employee => {
+                const option1 = document.createElement('option');
+                option1.value = `${employee.name}|${employee.email}`;
+                option1.textContent = employee.name;
+                employeeDropdown.appendChild(option1);
+                
+                const option2 = document.createElement('option');
+                option2.value = employee.name;
+                option2.textContent = employee.name;
+                reportEmployeeFilter.appendChild(option2);
+            });
         }
 
         // Tab navigation
@@ -622,7 +663,7 @@
 
         // Update the "My Tasks" table (employee view)
         function updateMyTasksTable() {
-            if (!currentUser || currentUser.isAdmin) return;
+            if (!currentUser) return;
             
             const tableBody = document.getElementById('myTasksTableBody');
             tableBody.innerHTML = '';
@@ -714,13 +755,13 @@
                 return;
             }
             
-            const employee = tasks.find(t => t.employeeName === employeeFilter);
+            const employee = employees.find(emp => emp.name === employeeFilter);
             if (!employee) {
                 alert('No employee found with that name.');
                 return;
             }
             
-            const employeeEmail = employee.employeeEmail;
+            const employeeEmail = employee.email;
             const subject = `Your Task Report - ${new Date().toLocaleDateString()}`;
             
             // Generate report content
