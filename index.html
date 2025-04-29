@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IVS Employee Task Management</title>
+    <title>IVS Task Management</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -185,6 +185,11 @@
             border-radius: 5px;
             background-color: #f9f9f9;
         }
+        .report-issue-btn {
+            background-color: #f39c12;
+            padding: 5px 10px;
+            font-size: 12px;
+        }
     </style>
 </head>
 <body>
@@ -205,7 +210,7 @@
 
     <div id="app-container" class="container hidden">
         <div style="overflow: hidden; margin-bottom: 20px;">
-            <h1 style="float: left;">IVS Employee Task Management System</h1>
+            <h1 style="float: left;">IVS Task Management</h1>
             <div class="user-info" id="userInfo"></div>
             <button class="logout-btn" onclick="logout()">Logout</button>
         </div>
@@ -213,12 +218,14 @@
         <div class="tabs">
             <div class="tab active" onclick="openTab('employees')" id="adminTab1">Employees</div>
             <div class="tab" onclick="openTab('assign-task')" id="adminTab2">Assign Task</div>
-            <div class="tab" onclick="openTab('tasks')">Task List</div>
-            <div class="tab" onclick="openTab('reports')" id="adminTab3">Reports</div>
-            <div class="tab" onclick="openTab('my-tasks')" id="employeeTab">My Tasks</div>
-            <div class="tab" onclick="openTab('add-user')" id="adminTab4">Add User</div>
+            <div class="tab" onclick="openTab('tasks')" id="adminTab3">Tasks</div>
+            <div class="tab" onclick="openTab('reports')" id="adminTab4">Reports</div>
+            <div class="tab" onclick="openTab('my-tasks')" id="employeeTab1">My Tasks</div>
+            <div class="tab" onclick="openTab('add-user')" id="adminTab5">Add User</div>
+            <div class="tab" onclick="openTab('report-issue')" id="employeeTab2">Report Issue</div>
         </div>
         
+        <!-- Employees Tab (Owner/Manager) -->
         <div id="employees" class="tab-content active">
             <h2>Employee List</h2>
             <table id="employeeTable">
@@ -231,28 +238,24 @@
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <!-- Employees will be populated here -->
-                </tbody>
+                <tbody></tbody>
             </table>
         </div>
         
+        <!-- Assign Task Tab (Owner/Manager) -->
         <div id="assign-task" class="tab-content">
             <h2>Assign New Task</h2>
             <form id="taskForm" onsubmit="assignTask(event)">
                 <div class="form-group">
                     <label for="employee">Assign To:</label>
-                    <select id="employee" required>
-                        <option value="">Select Employee</option>
-                        <!-- Employees will be populated here -->
-                    </select>
+                    <select id="employee" required></select>
                 </div>
                 <div class="form-group">
                     <label for="taskTitle">Task Title:</label>
                     <input type="text" id="taskTitle" required>
                 </div>
                 <div class="form-group">
-                    <label for="taskDescription">Task Description:</label>
+                    <label for="taskDescription">Description:</label>
                     <textarea id="taskDescription" required></textarea>
                 </div>
                 <div class="form-group">
@@ -271,84 +274,69 @@
             </form>
         </div>
         
+        <!-- Tasks Tab (Owner/Manager) -->
         <div id="tasks" class="tab-content">
-            <h2>Task List</h2>
+            <h2>All Tasks</h2>
             <table id="taskTable">
                 <thead>
                     <tr>
                         <th>Assigned By</th>
-                        <th>Employee</th>
-                        <th>Task Title</th>
-                        <th>Description</th>
+                        <th>Assigned To</th>
+                        <th>Task</th>
                         <th>Due Date</th>
                         <th>Priority</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody id="taskTableBody">
-                    <!-- Tasks will be populated here -->
-                </tbody>
+                <tbody id="taskTableBody"></tbody>
             </table>
         </div>
         
+        <!-- Reports Tab (Owner/Manager) -->
         <div id="reports" class="tab-content">
             <h2>Task Reports</h2>
-            
             <div class="report-filters">
                 <select id="reportEmployeeFilter">
                     <option value="">All Employees</option>
-                    <!-- Employees will be populated here -->
                 </select>
-                
                 <select id="reportStatusFilter">
                     <option value="">All Statuses</option>
                     <option value="Completed">Completed</option>
                     <option value="Not Completed">Not Completed</option>
                     <option value="Late Completed">Late Completed</option>
                 </select>
-                
                 <select id="reportPriorityFilter">
                     <option value="">All Priorities</option>
                     <option value="Low">Low</option>
                     <option value="Medium">Medium</option>
                     <option value="High">High</option>
                 </select>
-                
                 <button onclick="generateReport()">Generate Report</button>
             </div>
-            
             <div id="reportResults">
                 <table id="reportTable">
                     <thead>
                         <tr>
                             <th>Assigned By</th>
                             <th>Employee</th>
-                            <th>Task Title</th>
+                            <th>Task</th>
                             <th>Due Date</th>
-                            <th>Completion Date</th>
                             <th>Status</th>
-                            <th>Priority</th>
                         </tr>
                     </thead>
-                    <tbody id="reportTableBody">
-                        <!-- Report results will be populated here -->
-                    </tbody>
+                    <tbody id="reportTableBody"></tbody>
                 </table>
-            </div>
-            
-            <div class="form-group" style="margin-top: 20px;">
-                <button onclick="emailReport()">Email Report</button>
             </div>
         </div>
         
+        <!-- My Tasks Tab (Employees) -->
         <div id="my-tasks" class="tab-content">
             <h2>My Tasks</h2>
             <table id="myTasksTable">
                 <thead>
                     <tr>
-                        <th>Assigned By</th>
-                        <th>Task Title</th>
+                        <th>Task</th>
                         <th>Description</th>
                         <th>Due Date</th>
                         <th>Priority</th>
@@ -356,12 +344,11 @@
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody id="myTasksTableBody">
-                    <!-- Employee's tasks will be populated here -->
-                </tbody>
+                <tbody id="myTasksTableBody"></tbody>
             </table>
         </div>
         
+        <!-- Add User Tab (Owner Only) -->
         <div id="add-user" class="tab-content">
             <h2>Add New User</h2>
             <div class="add-user-form">
@@ -393,134 +380,44 @@
                 </form>
             </div>
         </div>
+        
+        <!-- Report Issue Tab (Employees) -->
+        <div id="report-issue" class="tab-content">
+            <h2>Report an Issue</h2>
+            <form id="issueForm" onsubmit="reportIssue(event)">
+                <div class="form-group">
+                    <label for="issueTitle">Issue Title:</label>
+                    <input type="text" id="issueTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="issueDescription">Description:</label>
+                    <textarea id="issueDescription" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="issuePriority">Priority:</label>
+                    <select id="issuePriority" required>
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select>
+                </div>
+                <input type="submit" value="Submit Report">
+            </form>
+        </div>
     </div>
 
     <script>
-        // Sample task data (in a real app, this would come from a database)
-        let tasks = [
-            {
-                id: 1,
-                assignedByName: "Dr. Hamza",
-                assignedByEmail: "ivsdrhamza@gmail.com",
-                employeeName: "Sir Hamza Abrar",
-                employeeEmail: "ivscoordinatorsheryar@gmail.com",
-                title: "Verify all pending fees",
-                description: "Check the fee records for all students and verify payments",
-                dueDate: "2023-06-15",
-                assignedDate: "2023-06-01",
-                priority: "High",
-                status: "Completed",
-                completionDate: "2023-06-14"
-            },
-            {
-                id: 2,
-                assignedByName: "Dr. Hamza",
-                assignedByEmail: "ivsdrhamza@gmail.com",
-                employeeName: "Sir Qasim",
-                employeeEmail: "ivswaleed132@gmail.com",
-                title: "Update Myskool records",
-                description: "Ensure all student records in Myskool are up to date",
-                dueDate: "2023-06-20",
-                assignedDate: "2023-06-05",
-                priority: "Medium",
-                status: "Not Completed",
-                completionDate: null
-            },
-            {
-                id: 3,
-                assignedByName: "Sir Junaid",
-                assignedByEmail: "ivscoordinator2@gmail.com",
-                employeeName: "Ms Sidra",
-                employeeEmail: "ivscoordinatorfemale1@gmail.com",
-                title: "Review master sheet",
-                description: "Double check all entries in the master sheet for accuracy",
-                dueDate: "2023-06-10",
-                assignedDate: "2023-06-01",
-                priority: "High",
-                status: "Late Completed",
-                completionDate: "2023-06-12"
-            }
-        ];
-
-        // User credentials (in a real app, this would be hashed and stored securely)
+        // Sample data (in a real app, use a database)
+        let tasks = [];
         let users = [
-            { 
-                id: 1,
-                name: "Dr. Hamza", 
-                email: "ivsdrhamza@gmail.com", 
-                password: "admin123", 
-                role: "owner", 
-                responsibilities: "System Owner" 
-            },
-            { 
-                id: 2,
-                name: "Sir Hamza Abrar", 
-                email: "ivscoordinatorsheryar@gmail.com", 
-                password: "hamza123", 
-                role: "employee", 
-                responsibilities: "Fee Verification" 
-            },
-            { 
-                id: 3,
-                name: "Sir Qasim", 
-                email: "ivswaleed132@gmail.com", 
-                password: "qasim123", 
-                role: "employee", 
-                responsibilities: "Myskool Incharge" 
-            },
-            { 
-                id: 4,
-                name: "Sir Abdur Rehman", 
-                email: "ivsabdurrehman@gmail.com", 
-                password: "rehman123", 
-                role: "employee", 
-                responsibilities: "Accounts & WhatsApp Representative" 
-            },
-            { 
-                id: 5,
-                name: "Sir Nouman", 
-                email: "ivsacnouman@gmail.com", 
-                password: "nouman123", 
-                role: "employee", 
-                responsibilities: "Folders and Myskool Checking Incharge" 
-            },
-            { 
-                id: 6,
-                name: "Ms Sidra", 
-                email: "ivscoordinatorfemale1@gmail.com", 
-                password: "sidra123", 
-                role: "employee", 
-                responsibilities: "Master Sheet Incharge" 
-            },
-            { 
-                id: 7,
-                name: "Ms Najma", 
-                email: "ivscoordinatorfemale2@gmail.com", 
-                password: "najma123", 
-                role: "employee", 
-                responsibilities: "Master Sheet Incharge" 
-            },
-            { 
-                id: 8,
-                name: "Sir Junaid", 
-                email: "ivscoordinator2@gmail.com", 
-                password: "junaid123", 
-                role: "manager", 
-                responsibilities: "Admission Department Incharge" 
-            },
-            { 
-                id: 9,
-                name: "Sir Tayyab", 
-                email: "acivs2021@gmail.com", 
-                password: "tayyab123", 
-                role: "manager", 
-                responsibilities: "Accounts Department Manager" 
-            }
+            { id: 1, name: "Dr. Hamza", email: "ivsdrhamza@gmail.com", password: "admin123", role: "owner", responsibilities: "System Owner" },
+            { id: 2, name: "Sir Hamza Abrar", email: "ivscoordinatorsheryar@gmail.com", password: "hamza123", role: "employee", responsibilities: "Fee Verification" },
+            { id: 3, name: "Sir Junaid", email: "ivscoordinator2@gmail.com", password: "junaid123", role: "manager", responsibilities: "Admissions" }
         ];
 
         let currentUser = null;
 
-        // Initialize the app when the page loads
+        // Initialize app
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('loginForm').addEventListener('submit', function(e) {
                 e.preventDefault();
@@ -551,42 +448,51 @@
             document.getElementById('loginForm').reset();
         }
 
-        // Show the app after successful login
+        // Show app based on role
         function showApp() {
             document.getElementById('login-page').classList.add('hidden');
             document.getElementById('app-container').classList.remove('hidden');
             
-            // Update UI based on user role
+            // Update UI based on role
             let roleDisplay = '';
             if (currentUser.role === 'owner') roleDisplay = 'Owner';
             else if (currentUser.role === 'manager') roleDisplay = 'Manager';
             else roleDisplay = 'Employee';
             
-            document.getElementById('userInfo').textContent = `Logged in as: ${currentUser.name} (${roleDisplay})`;
+            document.getElementById('userInfo').textContent = `${currentUser.name} (${roleDisplay})`;
             
             // Show/hide tabs based on role
             if (currentUser.role === 'owner') {
+                // Owner sees all tabs except employee-specific ones
                 document.getElementById('adminTab1').classList.remove('hidden');
                 document.getElementById('adminTab2').classList.remove('hidden');
                 document.getElementById('adminTab3').classList.remove('hidden');
                 document.getElementById('adminTab4').classList.remove('hidden');
-                document.getElementById('employeeTab').classList.add('hidden');
+                document.getElementById('adminTab5').classList.remove('hidden');
+                document.getElementById('employeeTab1').classList.add('hidden');
+                document.getElementById('employeeTab2').classList.add('hidden');
                 openTab('employees');
             } 
             else if (currentUser.role === 'manager') {
+                // Manager sees task assignment and reports
                 document.getElementById('adminTab1').classList.remove('hidden');
                 document.getElementById('adminTab2').classList.remove('hidden');
                 document.getElementById('adminTab3').classList.remove('hidden');
-                document.getElementById('adminTab4').classList.add('hidden');
-                document.getElementById('employeeTab').classList.add('hidden');
+                document.getElementById('adminTab4').classList.remove('hidden');
+                document.getElementById('adminTab5').classList.add('hidden');
+                document.getElementById('employeeTab1').classList.add('hidden');
+                document.getElementById('employeeTab2').classList.add('hidden');
                 openTab('employees');
             }
             else {
+                // Employee only sees their tasks and report issue
                 document.getElementById('adminTab1').classList.add('hidden');
                 document.getElementById('adminTab2').classList.add('hidden');
                 document.getElementById('adminTab3').classList.add('hidden');
                 document.getElementById('adminTab4').classList.add('hidden');
-                document.getElementById('employeeTab').classList.remove('hidden');
+                document.getElementById('adminTab5').classList.add('hidden');
+                document.getElementById('employeeTab1').classList.remove('hidden');
+                document.getElementById('employeeTab2').classList.remove('hidden');
                 openTab('my-tasks');
             }
             
@@ -596,9 +502,9 @@
             populateEmployeeDropdowns();
         }
 
-        // Update the employee table
+        // Update employee table (Owner/Manager)
         function updateEmployeeTable() {
-            if (!currentUser || (currentUser.role !== 'owner' && currentUser.role !== 'manager')) return;
+            if (!currentUser || currentUser.role === 'employee') return;
             
             const tableBody = document.querySelector('#employeeTable tbody');
             tableBody.innerHTML = '';
@@ -634,12 +540,12 @@
             });
         }
 
-        // Toggle manager status
+        // Toggle manager status (Owner only)
         function toggleManagerStatus(email, makeManager) {
             if (!currentUser || currentUser.role !== 'owner') return;
             
             if (email === 'ivsdrhamza@gmail.com') {
-                alert('Cannot change the owner status');
+                alert('Cannot change owner status');
                 return;
             }
             
@@ -647,17 +553,12 @@
             if (user) {
                 user.role = makeManager ? 'manager' : 'employee';
                 updateEmployeeTable();
-                
-                // If the current user changed their own status, update the UI
-                if (currentUser.email === email) {
-                    showApp();
-                }
-                
+                populateEmployeeDropdowns();
                 alert(`${user.name} is now ${makeManager ? 'a Manager' : 'an Employee'}`);
             }
         }
 
-        // Add new user
+        // Add new user (Owner only)
         function addNewUser(event) {
             event.preventDefault();
             
@@ -669,9 +570,9 @@
             const role = document.getElementById('newUserRole').value;
             const responsibilities = document.getElementById('newUserResponsibilities').value;
             
-            // Check if email already exists
+            // Check if email exists
             if (users.some(u => u.email === email)) {
-                alert('A user with this email already exists');
+                alert('User already exists');
                 return;
             }
             
@@ -687,29 +588,22 @@
             users.push(newUser);
             updateEmployeeTable();
             populateEmployeeDropdowns();
-            
-            // Reset form
             document.getElementById('newUserForm').reset();
-            
             alert('User added successfully!');
         }
 
-        // Populate employee dropdowns
+        // Populate employee dropdowns for task assignment
         function populateEmployeeDropdowns() {
             const employeeDropdown = document.getElementById('employee');
             const reportEmployeeFilter = document.getElementById('reportEmployeeFilter');
             
-            // Clear existing options (except the first one)
-            while (employeeDropdown.options.length > 1) {
-                employeeDropdown.remove(1);
-            }
-            while (reportEmployeeFilter.options.length > 1) {
-                reportEmployeeFilter.remove(1);
-            }
+            // Clear dropdowns
+            employeeDropdown.innerHTML = '<option value="">Select Employee</option>';
+            reportEmployeeFilter.innerHTML = '<option value="">All Employees</option>';
             
-            // Add users to dropdowns based on current user's role
+            // Populate based on current user's role
             users.forEach(user => {
-                // For task assignment dropdown
+                // Task assignment dropdown
                 if (currentUser.role === 'owner') {
                     // Owner can assign to anyone except themselves
                     if (user.email !== currentUser.email) {
@@ -729,7 +623,7 @@
                     }
                 }
                 
-                // For report filter dropdown
+                // Report filter dropdown
                 const option = document.createElement('option');
                 option.value = user.name;
                 option.textContent = user.name;
@@ -737,26 +631,7 @@
             });
         }
 
-        // Tab navigation
-        function openTab(tabName) {
-            const tabs = document.getElementsByClassName('tab');
-            for (let i = 0; i < tabs.length; i++) {
-                tabs[i].classList.remove('active');
-            }
-            
-            const tabContents = document.getElementsByClassName('tab-content');
-            for (let i = 0; i < tabContents.length; i++) {
-                tabContents[i].classList.remove('active');
-            }
-            
-            document.getElementById(tabName).classList.add('active');
-            const tabElement = document.querySelector(`.tab[onclick="openTab('${tabName}')"]`);
-            if (tabElement) {
-                tabElement.classList.add('active');
-            }
-        }
-
-        // Assign task from employee list
+        // Assign task to employee
         function assignTaskToEmployee(name, email) {
             if (!currentUser || (currentUser.role !== 'owner' && currentUser.role !== 'manager')) return;
             
@@ -764,7 +639,7 @@
             document.getElementById('employee').value = `${name}|${email}`;
         }
 
-        // Assign new task
+        // Assign new task (Owner/Manager)
         function assignTask(event) {
             event.preventDefault();
             
@@ -778,14 +653,15 @@
             const dueDate = document.getElementById('dueDate').value;
             const priority = document.getElementById('priority').value;
             
-            // Check if the assignee is valid based on current user's role
+            // Check if assignee is valid
             const assignee = users.find(u => u.email === employeeEmail);
             if (!assignee) {
                 alert('Invalid employee selected');
                 return;
             }
             
-            if (currentUser.role === 'manager' && assignee.role !== 'employee') {
+            // Managers can't assign to other managers or owner
+            if (currentUser.role === 'manager' && (assignee.role === 'manager' || assignee.role === 'owner')) {
                 alert('Managers can only assign tasks to employees');
                 return;
             }
@@ -809,12 +685,11 @@
             updateTaskTable();
             updateMyTasksTable();
             
-            // Send email notification
+            // Send email notification (simulated)
             sendTaskEmail(newTask);
             
             // Reset form
             document.getElementById('taskForm').reset();
-            
             alert('Task assigned successfully!');
             openTab('tasks');
         }
@@ -842,25 +717,22 @@
                 updateTaskTable();
                 updateMyTasksTable();
                 
-                // Send status update email
+                // Send status update email (simulated)
                 sendStatusUpdateEmail(task);
             }
         }
 
-        // Update the task table (admin/manager view)
+        // Update task table (Owner/Manager)
         function updateTaskTable() {
-            if (!currentUser || (currentUser.role !== 'owner' && currentUser.role !== 'manager')) return;
+            if (!currentUser || currentUser.role === 'employee') return;
             
             const tableBody = document.getElementById('taskTableBody');
             tableBody.innerHTML = '';
             
-            // Owners see all tasks, managers only see tasks they assigned or were assigned to their department
+            // Owners see all tasks, managers see only their assigned tasks
             const filteredTasks = currentUser.role === 'owner' ? 
                 tasks : 
-                tasks.filter(task => 
-                    task.assignedByEmail === currentUser.email || 
-                    task.employeeEmail === currentUser.email
-                );
+                tasks.filter(task => task.assignedByEmail === currentUser.email);
             
             filteredTasks.forEach(task => {
                 const row = document.createElement('tr');
@@ -874,12 +746,11 @@
                     <td>${task.assignedByName}</td>
                     <td>${task.employeeName}</td>
                     <td>${task.title}</td>
-                    <td>${task.description}</td>
                     <td>${formatDate(task.dueDate)}</td>
                     <td>${task.priority}</td>
                     <td class="${statusClass}">${task.status}</td>
                     <td>
-                        <select onchange="updateTaskStatus(${task.id}, this.value)" style="padding: 5px;">
+                        <select onchange="updateTaskStatus(${task.id}, this.value)">
                             <option value="Not Completed" ${task.status === "Not Completed" ? 'selected' : ''}>Not Completed</option>
                             <option value="Completed" ${task.status === "Completed" || task.status === "Late Completed" ? 'selected' : ''}>Completed</option>
                         </select>
@@ -890,7 +761,7 @@
             });
         }
 
-        // Update the "My Tasks" table (employee view)
+        // Update "My Tasks" table (Employees)
         function updateMyTasksTable() {
             if (!currentUser) return;
             
@@ -900,7 +771,7 @@
             const myTasks = tasks.filter(task => task.employeeEmail === currentUser.email);
             
             if (myTasks.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="7" style="text-align: center;">You have no tasks assigned</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="6">No tasks assigned</td></tr>';
                 return;
             }
             
@@ -913,14 +784,13 @@
                 else if (task.status === "Late Completed") statusClass = 'status-late';
                 
                 row.innerHTML = `
-                    <td>${task.assignedByName}</td>
                     <td>${task.title}</td>
                     <td>${task.description}</td>
                     <td>${formatDate(task.dueDate)}</td>
                     <td>${task.priority}</td>
                     <td class="${statusClass}">${task.status}</td>
                     <td>
-                        <select onchange="updateTaskStatus(${task.id}, this.value)" style="padding: 5px;">
+                        <select onchange="updateTaskStatus(${task.id}, this.value)">
                             <option value="Not Completed" ${task.status === "Not Completed" ? 'selected' : ''}>Not Completed</option>
                             <option value="Completed" ${task.status === "Completed" || task.status === "Late Completed" ? 'selected' : ''}>Completed</option>
                         </select>
@@ -931,21 +801,18 @@
             });
         }
 
-        // Generate report
+        // Generate report (Owner/Manager)
         function generateReport() {
-            if (!currentUser || (currentUser.role !== 'owner' && currentUser.role !== 'manager')) return;
+            if (!currentUser || currentUser.role === 'employee') return;
             
             const employeeFilter = document.getElementById('reportEmployeeFilter').value;
             const statusFilter = document.getElementById('reportStatusFilter').value;
             const priorityFilter = document.getElementById('reportPriorityFilter').value;
             
-            // Base filter based on user role
+            // Base filter based on role
             let baseTasks = tasks;
             if (currentUser.role === 'manager') {
-                baseTasks = tasks.filter(task => 
-                    task.assignedByEmail === currentUser.email || 
-                    task.employeeEmail === currentUser.email
-                );
+                baseTasks = tasks.filter(task => task.assignedByEmail === currentUser.email);
             }
             
             const filteredTasks = baseTasks.filter(task => {
@@ -958,7 +825,7 @@
             reportBody.innerHTML = '';
             
             if (filteredTasks.length === 0) {
-                reportBody.innerHTML = '<tr><td colspan="7" style="text-align: center;">No tasks match the selected filters</td></tr>';
+                reportBody.innerHTML = '<tr><td colspan="5">No tasks match filters</td></tr>';
                 return;
             }
             
@@ -975,54 +842,82 @@
                     <td>${task.employeeName}</td>
                     <td>${task.title}</td>
                     <td>${formatDate(task.dueDate)}</td>
-                    <td>${task.completionDate ? formatDate(task.completionDate) : 'N/A'}</td>
                     <td class="${statusClass}">${task.status}</td>
-                    <td>${task.priority}</td>
                 `;
                 
                 reportBody.appendChild(row);
             });
         }
 
-        // Email report to selected employees
-        function emailReport() {
-            if (!currentUser || (currentUser.role !== 'owner' && currentUser.role !== 'manager')) return;
+        // Report issue (Employees)
+        function reportIssue(event) {
+            event.preventDefault();
             
-            const employeeFilter = document.getElementById('reportEmployeeFilter').value;
+            if (!currentUser || currentUser.role !== 'employee') return;
             
-            if (employeeFilter === '') {
-                // Send report to all relevant employees
-                let recipients = [];
-                if (currentUser.role === 'owner') {
-                    recipients = users.map(u => u.email);
-                } else {
-                    // Manager sends to their department
-                    recipients = users
-                        .filter(u => u.role === 'employee')
-                        .map(u => u.email);
-                }
-                
-                const subject = `Task Report - ${new Date().toLocaleDateString()}`;
-                let emailBody = `Dear Team,\n\nHere is the task report:\n\n`;
-                
-                tasks.forEach(task => {
-                    if (currentUser.role === 'manager' && 
-                        task.assignedByEmail !== currentUser.email && 
-                        task.employeeEmail !== currentUser.email) {
-                        return; // Skip tasks not related to this manager
-                    }
-                    emailBody += `- ${task.employeeName}: ${task.title} - ${task.status} (Due: ${formatDate(task.dueDate)})\n`;
-                });
-                
-                emailBody += `\nBest regards,\n${currentUser.name}`;
-                
-                // Create mailto link (for demo purposes)
-                const mailtoLink = `mailto:${recipients.join(',')}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
-                window.open(mailtoLink, '_blank');
-                
-                alert('Report email prepared. Please check your email client.');
-            } else {
-                // Send to specific employee
-                const employee = users.find(emp => emp.name === employeeFilter);
-                if (!employee) {
-                    alert('No employee found with that name.');
+            const title = document.getElementById('issueTitle').value;
+            const description = document.getElementById('issueDescription').value;
+            const priority = document.getElementById('issuePriority').value;
+            
+            // Find manager or owner to report to
+            const manager = users.find(u => u.role === 'manager');
+            const owner = users.find(u => u.role === 'owner');
+            
+            // Simulate sending email (in real app, use an API)
+            const subject = `Issue Reported: ${title}`;
+            const body = `Reported by: ${currentUser.name}\n\nIssue: ${description}\nPriority: ${priority}\n\nPlease address this issue.`;
+            
+            // Create mailto link (for demo)
+            const mailtoLink = `mailto:${manager ? manager.email : owner.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            window.open(mailtoLink, '_blank');
+            
+            alert('Issue reported successfully!');
+            document.getElementById('issueForm').reset();
+        }
+
+        // Simulate sending task email
+        function sendTaskEmail(task) {
+            const subject = `New Task: ${task.title}`;
+            const body = `You have been assigned a new task by ${task.assignedByName}:\n\n${task.description}\n\nDue: ${formatDate(task.dueDate)}\nPriority: ${task.priority}`;
+            
+            // In a real app, use an email API
+            console.log(`Email to ${task.employeeEmail}: ${subject}\n${body}`);
+        }
+
+        // Simulate sending status update email
+        function sendStatusUpdateEmail(task) {
+            const subject = `Task Updated: ${task.title} - ${task.status}`;
+            const body = `Task status updated by ${currentUser.name}:\n\n${task.title} is now ${task.status}`;
+            
+            // In a real app, use an email API
+            console.log(`Email to ${task.assignedByEmail}: ${subject}\n${body}`);
+        }
+
+        // Format date
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString(undefined, options);
+        }
+
+        // Tab navigation
+        function openTab(tabName) {
+            const tabs = document.getElementsByClassName('tab');
+            for (let i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove('active');
+            }
+            
+            const tabContents = document.getElementsByClassName('tab-content');
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove('active');
+            }
+            
+            document.getElementById(tabName).classList.add('active');
+            const tabElement = document.querySelector(`.tab[onclick="openTab('${tabName}')"]`);
+            if (tabElement) {
+                tabElement.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
